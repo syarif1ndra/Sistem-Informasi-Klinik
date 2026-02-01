@@ -11,6 +11,8 @@ class Queue extends Model
 
     protected $fillable = [
         'patient_id',
+        'service_id',
+        'bpjs_usage',
         'queue_number',
         'status',
         'date',
@@ -19,5 +21,10 @@ class Queue extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 }

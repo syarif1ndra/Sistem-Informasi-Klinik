@@ -1,64 +1,103 @@
 @extends('layouts.public')
 
-@section('title', 'Pendaftaran Pasien')
-
 @section('content')
-<div class="py-12">
-    <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Formulir Pendaftaran Pasien Baru</h2>
-            
-            <form action="{{ route('public.register.store') }}" method="POST">
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+            <div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Pendaftaran Pasien</h2>
+                <p class="mt-2 text-center text-sm text-gray-600">
+                    Silahkan isi form di bawah ini untuk mendapatkan nomor antrian.
+                </p>
+            </div>
+
+            <form class="mt-8 space-y-6" action="{{ route('public.register.store') }}" method="POST">
                 @csrf
-                <div class="grid grid-cols-1 gap-6">
+
+                @if ($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Terjadi Kesalahan!</strong>
+                        <ul class="mt-2 list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="space-y-4">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>
-                        @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        <input id="name" name="name" type="text" required
+                            class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                     </div>
 
-                    <div>
-                        <label for="nik" class="block text-sm font-medium text-gray-700">NIK (Nomor Induk Kependudukan)</label>
-                        <input type="text" name="nik" id="nik" value="{{ old('nik') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>
-                        @error('nik') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label for="dob" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
-                            <input type="date" name="dob" id="dob" value="{{ old('dob') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>
-                            @error('dob') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            <input id="dob" name="dob" type="date" required
+                                class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                         </div>
                         <div>
                             <label for="gender" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                            <select name="gender" id="gender" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>
-                                <option value="P" {{ old('gender') == 'P' ? 'selected' : '' }}>Perempuan</option>
-                                <option value="L" {{ old('gender') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                            <select id="gender" name="gender" required
+                                class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
                             </select>
-                            @error('gender') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon/WA</label>
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>
-                        @error('phone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        <label for="whatsapp_number" class="block text-sm font-medium text-gray-700">Nomor WhatsApp</label>
+                        <input id="whatsapp_number" name="whatsapp_number" type="tel" required
+                            class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                     </div>
 
                     <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                        <textarea name="address" id="address" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500" required>{{ old('address') }}</textarea>
-                        @error('address') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        <label for="address" class="block text-sm font-medium text-gray-700">Alamat</label>
+                        <textarea id="address" name="address" rows="3" required
+                            class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"></textarea>
                     </div>
 
-                    <div class="pt-4">
-                        <button type="submit" class="w-full bg-pink-600 text-white px-6 py-3 rounded-md font-bold hover:bg-pink-700 transition duration-150">
-                            Daftar & Ambil Antrian
-                        </button>
+                    <div>
+                        <label for="service_id" class="block text-sm font-medium text-gray-700">Layanan Kesehatan</label>
+                        <select id="service_id" name="service_id" required
+                            class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            @foreach($services as $service)
+                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Penggunaan BPJS</label>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex items-center">
+                                <input id="bpjs_yes" name="bpjs_usage" type="radio" value="1"
+                                    class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                                <label for="bpjs_yes" class="ml-2 block text-sm text-gray-900">Ya</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="bpjs_no" name="bpjs_usage" type="radio" value="0" checked
+                                    class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                                <label for="bpjs_no" class="ml-2 block text-sm text-gray-900">Tidak</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+                        Daftar Sekarang
+                    </button>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ route('public.home') }}" class="text-sm text-primary-600 hover:text-primary-500">Kembali ke
+                        Beranda</a>
                 </div>
             </form>
         </div>
     </div>
-</div>
 @endsection

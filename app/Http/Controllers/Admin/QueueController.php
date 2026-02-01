@@ -8,24 +8,25 @@ use Illuminate\Http\Request;
 
 class QueueController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $queues = Queue::with('patient')
-            ->where('date', date('Y-m-d'))
-            ->orderBy('queue_number', 'asc')
+        $date = $request->input('date', date('Y-m-d'));
+        $queues = Queue::with(['patient', 'service'])
+            ->whereDate('date', $date)
+            ->orderBy('queue_number')
             ->get();
-            
-        return view('admin.queues.index', compact('queues'));
+
+        return view('admin.queues.index', compact('queues', 'date'));
     }
 
     public function updateStatus(Request $request, Queue $queue)
     {
-        $request->validate([
-            'status' => 'required|in:waiting,calling,finished',
+        $validated = $request->validate([
+            'status' => 'required|in:waiting,calling,called,finished,cancelled',
         ]);
 
-        $queue->update(['status' => $request->status]);
+        $queue->update(['status' => $validated['status']]);
 
-        return back()->with('success', 'Status antrian berhasil diperbarui.');
+        return redirect()->route('admin.queues.index')->with('success', 'Status antrian berhasil diperbarui.');
     }
 }

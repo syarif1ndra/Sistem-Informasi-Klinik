@@ -1,132 +1,220 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Data Kelahiran') }}
-        </h2>
-    </x-slot>
+@extends('layouts.admin')
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+@section('content')
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-pink-500 to-rose-600 px-6 py-4 flex justify-between items-center">
+                <h2 class="text-white text-xl font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Tambah Data Kelahiran
+                </h2>
+                <a href="{{ route('admin.birth_records.index') }}"
+                    class="text-white hover:text-pink-100 transition duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Form -->
+            <div class="p-8">
                 <form action="{{ route('admin.birth_records.store') }}" method="POST">
                     @csrf
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nama Bayi -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Bayi *</label>
-                            <input type="text" name="baby_name" value="{{ old('baby_name') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('baby_name') border-red-500 @enderror">
-                            @error('baby_name')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                    <div class="space-y-8">
+                        <!-- Section: Data Bayi -->
+                        <div class="bg-pink-50 rounded-xl p-6 border border-pink-100">
+                            <h3 class="text-lg font-bold text-pink-700 mb-4 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                                Data Bayi
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Bayi</label>
+                                    <input type="text" name="baby_name"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin</label>
+                                    <select name="gender"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        required>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tempat Lahir</label>
+                                    <input type="text" name="birth_place"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
+                                    <input type="date" name="birth_date"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jam Lahir</label>
+                                    <input type="time" name="birth_time"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        required>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Tanggal Lahir -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir *</label>
-                            <input type="date" name="birth_date" value="{{ old('birth_date') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('birth_date') border-red-500 @enderror">
-                            @error('birth_date')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        <!-- Section: Data Medis & Fisik -->
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Data Medis & Fisik
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Berat (gram)</label>
+                                    <input type="text" name="baby_weight"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Panjang (cm)</label>
+                                    <input type="text" name="baby_length"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Lingkar Kepala
+                                        (cm)</label>
+                                    <input type="text" name="head_circumference"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Lingkar Dada (cm)</label>
+                                    <input type="text" name="chest_circumference"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div class="col-span-2 md:col-span-1">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">GPA</label>
+                                    <input type="text" name="gpa"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                        placeholder="G.. P.. A..">
+                                </div>
+                                <div class="col-span-2 md:col-span-3">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tahap Persalinan</label>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <input type="text" name="kala_1"
+                                            class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            placeholder="Kala I">
+                                        <input type="text" name="kala_2"
+                                            class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            placeholder="Kala II">
+                                        <input type="text" name="kala_3"
+                                            class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            placeholder="Kala III">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Waktu Lahir -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Waktu Lahir *</label>
-                            <input type="time" name="birth_time" value="{{ old('birth_time') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('birth_time') border-red-500 @enderror">
-                            @error('birth_time')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        <!-- Section: Data Orang Tua -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Ibu -->
+                            <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                                <h3 class="text-lg font-bold text-pink-600 mb-4 border-b pb-2">Data Ibu</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">Nama Lengkap</label>
+                                        <input type="text" name="mother_name"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">NIK</label>
+                                        <input type="text" name="mother_nik"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">Alamat</label>
+                                        <textarea name="mother_address" rows="2"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ayah -->
+                            <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                                <h3 class="text-lg font-bold text-blue-600 mb-4 border-b pb-2">Data Ayah</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">Nama Lengkap</label>
+                                        <input type="text" name="father_name"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">NIK</label>
+                                        <input type="text" name="father_nik"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase">Alamat</label>
+                                        <textarea name="father_address" rows="2"
+                                            class="w-full mt-1 rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Tempat Lahir -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Lahir *</label>
-                            <input type="text" name="birth_place" value="{{ old('birth_place') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('birth_place') border-red-500 @enderror">
-                            @error('birth_place')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        <!-- Lainnya -->
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-700 mb-4">Informasi Tambahan</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">No. Telepon /
+                                        WhatsApp</label>
+                                    <input type="text" name="phone_number"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Surat Keterangan
+                                        (Opsional)</label>
+                                    <input type="text" name="birth_certificate_number"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan Tambahan</label>
+                                    <textarea name="notes" rows="3"
+                                        class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition p-2.5"></textarea>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Jenis Kelamin -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin *</label>
-                            <select name="gender" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('gender') border-red-500 @enderror">
-                                <option value="">-- Pilih --</option>
-                                <option value="L" {{ old('gender') === 'L' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="P" {{ old('gender') === 'P' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                            @error('gender')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Berat Bayi -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Berat Bayi (kg)</label>
-                            <input type="text" name="baby_weight" value="{{ old('baby_weight') }}" placeholder="cth: 3.5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('baby_weight') border-red-500 @enderror">
-                            @error('baby_weight')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Panjang Bayi -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Panjang Bayi (cm)</label>
-                            <input type="text" name="baby_length" value="{{ old('baby_length') }}" placeholder="cth: 50" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('baby_length') border-red-500 @enderror">
-                            @error('baby_length')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Nama Ibu -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Ibu *</label>
-                            <input type="text" name="mother_name" value="{{ old('mother_name') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('mother_name') border-red-500 @enderror">
-                            @error('mother_name')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- NIK Ibu -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">NIK Ibu *</label>
-                            <input type="text" name="mother_nik" value="{{ old('mother_nik') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('mother_nik') border-red-500 @enderror">
-                            @error('mother_nik')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Alamat Ibu -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Ibu</label>
-                            <textarea name="mother_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('mother_address') border-red-500 @enderror">{{ old('mother_address') }}</textarea>
-                            @error('mother_address')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Nama Ayah -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Ayah *</label>
-                            <input type="text" name="father_name" value="{{ old('father_name') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('father_name') border-red-500 @enderror">
-                            @error('father_name')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- NIK Ayah -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">NIK Ayah *</label>
-                            <input type="text" name="father_nik" value="{{ old('father_nik') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('father_nik') border-red-500 @enderror">
-                            @error('father_nik')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Alamat Ayah -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Ayah</label>
-                            <textarea name="father_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('father_address') border-red-500 @enderror">{{ old('father_address') }}</textarea>
-                            @error('father_address')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Nomor Surat Kelahiran -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Surat Kelahiran</label>
-                            <input type="text" name="birth_certificate_number" value="{{ old('birth_certificate_number') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('birth_certificate_number') border-red-500 @enderror">
-                            @error('birth_certificate_number')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
-
-                        <!-- Catatan -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Catatan</label>
-                            <textarea name="notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
-                            @error('notes')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
-                        </div>
                     </div>
 
-                    <div class="flex justify-end gap-4 mt-8">
-                        <a href="{{ route('admin.birth_records.index') }}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    <!-- Actions -->
+                    <div class="mt-8 flex items-center justify-end space-x-4">
+                        <a href="{{ route('admin.birth_records.index') }}"
+                            class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition duration-200">
                             Batal
                         </a>
-                        <button type="submit" class="px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700">
+                        <button type="submit"
+                            class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-lg font-bold hover:from-pink-600 hover:to-rose-700 shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">
                             Simpan Data
                         </button>
                     </div>
@@ -134,4 +222,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

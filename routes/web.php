@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\MedicalRecordController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\BirthRecordController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ImmunizationController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
@@ -25,12 +27,15 @@ Route::post('/daftar', [PatientRegistrationController::class, 'store'])->name('p
 // Admin Routes (Protected by Breeze)
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Queue Management
     Route::get('/queues', [QueueController::class, 'index'])->name('queues.index');
     Route::patch('/queues/{queue}/status', [QueueController::class, 'updateStatus'])->name('queues.updateStatus');
-    
-    // Resource Routes (Stubs for now)
+
+    // Services Management
+    Route::resource('services', ServiceController::class);
+
+    // Resource Routes
     Route::resource('patients', PatientController::class);
     Route::resource('medicines', MedicineController::class);
     Route::resource('transactions', TransactionController::class);
@@ -39,6 +44,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('users', UserController::class);
     Route::resource('birth_records', BirthRecordController::class);
     Route::get('/birth_records/{birthRecord}/pdf', [BirthRecordController::class, 'generatePdf'])->name('birth_records.generatePdf');
+    Route::resource('immunizations', ImmunizationController::class);
 });
 
 // Redirect default dashboard to admin dashboard
@@ -52,4 +58,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -8,10 +8,14 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::latest()->paginate(10);
-        return view('admin.patients.index', compact('patients'));
+        $date = $request->input('date', date('Y-m-d'));
+        $patients = Patient::whereDate('created_at', $date)
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.patients.index', compact('patients', 'date'));
     }
 
     public function create()
@@ -23,9 +27,8 @@ class PatientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'nik' => 'required|string|unique:patients,nik',
             'address' => 'required|string',
-            'phone' => 'required|string',
+            'whatsapp_number' => 'required|string',
             'dob' => 'required|date',
             'gender' => 'required|in:L,P',
         ]);
@@ -44,9 +47,8 @@ class PatientController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'nik' => 'required|string|unique:patients,nik,' . $patient->id,
             'address' => 'required|string',
-            'phone' => 'required|string',
+            'whatsapp_number' => 'required|string',
             'dob' => 'required|date',
             'gender' => 'required|in:L,P',
         ]);

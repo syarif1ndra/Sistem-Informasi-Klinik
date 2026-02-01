@@ -9,9 +9,9 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Tambah Pasien Baru
+                    Edit Data Pasien
                 </h2>
                 <a href="{{ route('admin.patients.index') }}"
                     class="text-white hover:text-pink-100 transition duration-150">
@@ -24,16 +24,17 @@
 
             <!-- Form -->
             <div class="p-8">
-                <form action="{{ route('admin.patients.store') }}" method="POST">
+                <form action="{{ route('admin.patients.update', $patient) }}" method="POST">
                     @csrf
+                    @method('PUT')
 
                     <div class="space-y-6">
                         <!-- Primary Info -->
                         <div>
                             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                            <input type="text" name="name" id="name"
+                            <input type="text" name="name" id="name" value="{{ $patient->name }}"
                                 class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition duration-200 p-2.5"
-                                placeholder="Masukkan nama lengkap pasien" required>
+                                required>
                         </div>
 
                         <!-- Secondary Info Grid -->
@@ -41,7 +42,7 @@
                             <div>
                                 <label for="dob" class="block text-sm font-semibold text-gray-700 mb-2">Tanggal
                                     Lahir</label>
-                                <input type="date" name="dob" id="dob"
+                                <input type="date" name="dob" id="dob" value="{{ $patient->dob }}"
                                     class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition duration-200 p-2.5"
                                     required>
                             </div>
@@ -52,9 +53,8 @@
                                 <select name="gender" id="gender"
                                     class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition duration-200 p-2.5"
                                     required>
-                                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                                    <option value="L">Laki-laki</option>
-                                    <option value="P">Perempuan</option>
+                                    <option value="L" {{ $patient->gender == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="P" {{ $patient->gender == 'P' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                             </div>
                         </div>
@@ -72,8 +72,9 @@
                                     </svg>
                                 </div>
                                 <input type="text" name="whatsapp_number" id="whatsapp_number"
+                                    value="{{ $patient->whatsapp_number }}"
                                     class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition duration-200 pl-10 p-2.5"
-                                    placeholder="Contoh: 081234567890" required>
+                                    required>
                             </div>
                         </div>
 
@@ -83,7 +84,7 @@
                                 Lengkap</label>
                             <textarea name="address" id="address" rows="3"
                                 class="w-full rounded-lg border-gray-300 focus:border-pink-500 focus:ring-pink-500 shadow-sm transition duration-200 p-2.5"
-                                placeholder="Masukkan alamat lengkap pasien" required></textarea>
+                                required>{{ $patient->address }}</textarea>
                         </div>
                     </div>
 
@@ -95,7 +96,7 @@
                         </a>
                         <button type="submit"
                             class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-lg font-bold hover:from-pink-600 hover:to-rose-700 shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5">
-                            Simpan Data
+                            Update Data
                         </button>
                     </div>
                 </form>
