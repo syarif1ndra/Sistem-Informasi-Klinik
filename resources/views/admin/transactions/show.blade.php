@@ -76,7 +76,7 @@
                             <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Tanggal &
                                 Waktu</label>
                             <div class="text-lg font-semibold text-gray-900">
-                                {{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('d F Y, H:i') }} WIB
+                                {{ $transaction->created_at->translatedFormat('d F Y, H:i') }} WIB
                             </div>
                         </div>
                     </div>

@@ -34,7 +34,7 @@
                 @forelse($transactions as $transaction)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('d F Y H:i') }}
+                            {{ $transaction->created_at->translatedFormat('d F Y, H:i') }} WIB
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ $transaction->patient->name }}</td>
@@ -59,10 +59,14 @@
                                 </form>
                             @endif
                             <form action="{{ route('admin.transactions.destroy', $transaction) }}" method="POST"
-                                class="inline-block" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                class="inline-block" 
+                                id="delete-form-{{ $transaction->id }}"
+                                onsubmit="event.preventDefault();">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                <button type="button" 
+                                    onclick="openDeleteModal(document.getElementById('delete-form-{{ $transaction->id }}'), 'Transaksi #{{ $transaction->id }}')"
+                                    class="text-red-600 hover:text-red-900">Hapus</button>
                             </form>
                         </td>
                     </tr>

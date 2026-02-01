@@ -198,26 +198,170 @@
                 </div>
             </header>
 
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
-                @if(session('success'))
-                    <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                        role="alert">
-                        <strong class="font-bold">Berhasil!</strong>
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                    </div>
-                @endif
 
-                @if(session('error'))
-                    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <span class="block sm:inline">{{ session('error') }}</span>
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                <!-- Toast Notifications -->
+                <div x-data="{ 
+                    show: false, 
+                    message: '', 
+                    type: 'success',
+                    init() {
+                        @if(session('success'))
+                            this.showToast('{{ session('success') }}', 'success');
+                        @endif
+                        @if(session('error'))
+                            this.showToast('{{ session('error') }}', 'error');
+                        @endif
+                    },
+                    showToast(msg, toastType) {
+                        this.message = msg;
+                        this.type = toastType;
+                        this.show = true;
+                        setTimeout(() => { this.show = false }, 5000);
+                    }
+                }"
+                @show-toast.window="showToast($event.detail.message, $event.detail.type)"
+                x-show="show"
+                x-transition:enter="transform ease-out duration-300 transition"
+                x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                x-transition:leave="transition ease-in duration-100"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed top-4 right-4 z-50 max-w-md w-full"
+                style="display: none;">
+                    <div :class="{
+                        'bg-gradient-to-r from-green-500 to-emerald-600': type === 'success',
+                        'bg-gradient-to-r from-red-500 to-pink-600': type === 'error',
+                        'bg-gradient-to-r from-blue-500 to-indigo-600': type === 'info',
+                        'bg-gradient-to-r from-yellow-500 to-orange-600': type === 'warning'
+                    }" class="rounded-xl shadow-2xl p-4 flex items-start gap-3">
+                        <!-- Icon -->
+                        <div class="flex-shrink-0">
+                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
+                                <!-- Success Icon -->
+                                <svg x-show="type === 'success'" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <!-- Error Icon -->
+                                <svg x-show="type === 'error'" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                <!-- Info Icon -->
+                                <svg x-show="type === 'info'" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <!-- Warning Icon -->
+                                <svg x-show="type === 'warning'" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="flex-1 pt-0.5">
+                            <p class="text-sm font-bold text-white" x-text="type === 'success' ? 'Berhasil!' : type === 'error' ? 'Error!' : type === 'warning' ? 'Peringatan!' : 'Informasi'"></p>
+                            <p class="mt-1 text-sm text-white/90" x-text="message"></p>
+                        </div>
+                        
+                        <!-- Close Button -->
+                        <button @click="show = false" class="flex-shrink-0 text-white/80 hover:text-white transition">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
-                @endif
+                </div>
 
                 @yield('content')
             </main>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div x-data="{ 
+        showDeleteModal: false, 
+        deleteForm: null,
+        itemName: '',
+        openDeleteModal(form, name = 'item ini') {
+            this.deleteForm = form;
+            this.itemName = name;
+            this.showDeleteModal = true;
+        },
+        confirmDelete() {
+            if (this.deleteForm) {
+                this.deleteForm.submit();
+            }
+        }
+    }" @open-delete-modal.window="openDeleteModal($event.detail.form, $event.detail.name)" x-show="showDeleteModal"
+        x-cloak class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+        <!-- Backdrop -->
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" @click="showDeleteModal = false"
+                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+
+            <!-- Center modal -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+            <!-- Modal Content -->
+            <div x-show="showDeleteModal" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-xl shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+
+                <!-- Header with gradient -->
+                <div class="bg-gradient-to-r from-red-500 to-pink-600 px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-white/20">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Konfirmasi Penghapusan</h3>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="px-6 py-5">
+                    <p class="text-gray-700 text-base leading-relaxed">
+                        Apakah Anda yakin ingin menghapus <span class="font-bold text-gray-900"
+                            x-text="itemName"></span>?
+                    </p>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Tindakan ini tidak dapat dibatalkan dan data akan dihapus secara permanen.
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="bg-gray-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                    <button type="button" @click="showDeleteModal = false"
+                        class="w-full sm:w-auto px-6 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150">
+                        Batal
+                    </button>
+                    <button type="button" @click="confirmDelete()"
+                        class="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 transform hover:-translate-y-0.5">
+                        Ya, Hapus
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global function to open delete modal
+        function openDeleteModal(form, itemName = 'item ini') {
+            window.dispatchEvent(new CustomEvent('open-delete-modal', {
+                detail: { form: form, name: itemName }
+            }));
+        }
+    </script>
 </body>
 
 </html>

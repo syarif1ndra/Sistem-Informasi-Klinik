@@ -42,10 +42,12 @@
                             <a href="{{ route('admin.patients.edit', $patient) }}"
                                 class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
                             <form action="{{ route('admin.patients.destroy', $patient) }}" method="POST" class="inline-block"
-                                onsubmit="return confirm('Yakin ingin menghapus?')">
+                                id="delete-form-{{ $patient->id }}" onsubmit="event.preventDefault();">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                <button type="button"
+                                    onclick="openDeleteModal(document.getElementById('delete-form-{{ $patient->id }}'), '{{ $patient->name }}')"
+                                    class="text-red-600 hover:text-red-900">Hapus</button>
                             </form>
                         </td>
                     </tr>

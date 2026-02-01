@@ -26,15 +26,18 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $service->name }}</td>
                         <td class="px-6 py-4 text-sm text-gray-500">{{ Str::limit($service->description, 50) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
-                            {{ number_format($service->price, 0, ',', '.') }}</td>
+                            {{ number_format($service->price, 0, ',', '.') }}
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <a href="{{ route('admin.services.edit', $service) }}"
                                 class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
                             <form action="{{ route('admin.services.destroy', $service) }}" method="POST" class="inline-block"
-                                onsubmit="return confirm('Yakin ingin menghapus?')">
+                                id="delete-form-{{ $service->id }}" onsubmit="event.preventDefault();">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                <button type="button"
+                                    onclick="openDeleteModal(document.getElementById('delete-form-{{ $service->id }}'), '{{ $service->name }}')"
+                                    class="text-red-600 hover:text-red-900">Hapus</button>
                             </form>
                         </td>
                     </tr>

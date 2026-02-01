@@ -16,6 +16,10 @@ class Transaction extends Model
         'date',
     ];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
