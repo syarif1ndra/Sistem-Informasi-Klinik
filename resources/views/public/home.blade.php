@@ -86,24 +86,74 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Layanan Kesehatan Kami</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @forelse($services as $service)
-                    <div
-                        class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
-                        <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $service->name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ $service->description }}</p>
+                <!-- Periksa Kehamilan -->
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
+                    <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                @empty
-                    <p class="col-span-3 text-center text-gray-500">Belum ada data layanan.</p>
-                @endforelse
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Periksa Kehamilan</h3>
+                    <p class="text-gray-600 mb-4">Pemeriksaan rutin kehamilan untuk memastikan kesehatan ibu dan janin.</p>
+                </div>
+
+                <!-- Persalinan -->
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
+                    <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Persalinan</h3>
+                    <p class="text-gray-600 mb-4">Layanan persalinan dengan tenaga medis profesional dan fasilitas lengkap.</p>
+                </div>
+
+                <!-- Keluarga Berencana -->
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
+                    <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Keluarga Berencana</h3>
+                    <p class="text-gray-600 mb-4">Konsultasi dan layanan KB untuk perencanaan keluarga yang sehat.</p>
+                </div>
+
+                <!-- Kesehatan Ibu dan Anak -->
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
+                    <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Kesehatan Ibu dan Anak</h3>
+                    <p class="text-gray-600 mb-4">Pemeriksaan dan perawatan kesehatan untuk ibu dan anak.</p>
+                </div>
+
+                <!-- Imunisasi -->
+                <div
+                    class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg shadow-lg p-8 border-t-4 border-pink-500 hover:shadow-xl transition duration-300">
+                    <div class="bg-pink-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Imunisasi</h3>
+                    <p class="text-gray-600 mb-4">Program imunisasi lengkap untuk bayi dan anak sesuai jadwal.</p>
+                </div>
             </div>
         </div>
     </div>
+
 
     <!-- Obat Tersedia -->
     <div class="py-16 bg-gray-50">

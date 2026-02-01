@@ -16,12 +16,11 @@ class PublicController extends Controller
             ->where('status', 'calling')
             ->orderBy('updated_at', 'desc')
             ->first();
-        
-        $services = Service::all();
+
         $medicines = Medicine::all();
         $faqs = Faq::all();
-            
-        return view('public.home', compact('currentQueue', 'services', 'medicines', 'faqs'));
+
+        return view('public.home', compact('currentQueue', 'medicines', 'faqs'));
     }
 
     public function services()
